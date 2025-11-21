@@ -1,17 +1,10 @@
 # Build stage
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
-COPY . .
+COPY target/ReactData-0.0.1-SNAPSHOT.jar app.jar
 
-RUN ./mvnw clean install -DskipTests
+EXPOSE 8080
 
-# Runtime stage
-FROM eclipse-temurin:21-jdk
-
-WORKDIR /app
-
-COPY --from=build /app/target/*.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
